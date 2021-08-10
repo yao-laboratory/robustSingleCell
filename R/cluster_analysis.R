@@ -24,9 +24,39 @@ cluster <- function(knn.ratio, label, path, data.path, nPCs) {
     memberships <- community$memberships
     nclusters <- length(unique(membership))
 
-    clustering <- list(modularity = modularity, memberships = memberships, membership = membership,
-        knn.ratio = knn.ratio, nclusters = nclusters)
+    ################# yinglu changed here
+    # to fix the problem that PCA has no same dimension with membership
+    # the reason is that the graph structure delete some cells that are not neighbour to others
+    
+    n_cell = dim(PCA)[2]
+    membership_changed <- numeric(n_cell)
+    n <- 1:n_cell
+    name_changed <- as.character(n)
+    names(membership_changed) <- name_changed
 
+    for (nm in vertices_name) {
+        membership_changed[nm] <- membership[nm]
+        }
+    ####################
+    dimnames(memberships) <- list(1:nrow(memberships), vertices_name)
+    memberships_changed <- matrix(0, nrow=nrow(memberships), ncol=n_cell)
+    dimnames(memberships_changed) <- list(1:nrow(memberships), name_changed)
+
+    for (i in 1:nrow(memberships)) {
+        for (nm in vertices_name) {
+            memberships_changed[i,nm] <- memberships[i,nm]
+
+            }
+        }
+
+    colnames(memberships_changed) <- NULL
+    ncluster <- ncluster+1
+
+    clustering <- list(modularity = modularity, memberships = memberships_changed, membership = membership_changed, knn.ratio = knn.ratio, nclusters = nclusters)
+
+#    clustering <- list(modularity = modularity, memberships = memberships, membership = membership,
+ #       knn.ratio = knn.ratio, nclusters = nclusters)
+############################################################################################
     saveRDS(clustering, file = file.path(path, "clustering", paste(label, knn.ratio,
         "rds", sep = ".")))
 }

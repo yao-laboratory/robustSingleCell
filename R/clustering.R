@@ -74,10 +74,22 @@ get.cluster.names.with.diff <- function(cluster.diff, types, print) {
 
     expression <- cbind(types, cluster.diff[match(types$gene, cluster.diff$gene),
         ])
-    if (print)
-        print(expression[!is.na(expression$fold), ])
-    table <- sort(table(expression$type[!is.na(expression$fold)]) - minimum.genes.to.qualify,
+    ################ yinglu changed here
+    # the length of minum.gene.to.qualify is not the same with table(expression$type[!is.na(expression$fold)]
+#    if (print)
+#        print(expression[!is.na(expression$fold), ])
+#    table <- sort(table(expression$type[!is.na(expression$fold)]) - minimum.genes.to.qualify,
+#        decreasing = T)
+    frequency <- table(expression$type[!is.na(expression$fold)])
+    table_changed <- integer(length(minimum.genes.to.qualify))
+    names(table_changed) <- names(minimum.genes.to.qualify)
+    for (name in names(frequency)) {
+        table_changed[name] <- frequency[name]
+    }
+    table <- sort(table_changed - minimum.genes.to.qualify,
         decreasing = T)
+    #####################################################
+
     if (print)
         print(table)
     if (sum(table > 0) == 0)

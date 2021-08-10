@@ -271,7 +271,10 @@ plot.tSNE <- function(environment, tSNE.job, perplexity, max_iter, membership = 
                       scale_shape(solid = T) + xlab("tSNE 1") + ylab("tSNE 2") +
                       theme_classic(base_size = 20) + theme(legend.position = "bottom") +
                       scale_colour_gradient2(low = "blue", mid = "white", high = "red",
-                        midpoint = 0) + guides(color = FALSE) + ggtitle(name))
+                        midpoint = 0) + guides(color = "none") + ggtitle(name))
+		  ###############yinglu changed here
+		  # FALSE is deprecated and replaced with "none"
+                        #midpoint = 0) + guides(color = FALSE) + ggtitle(name))
                   }
                 }
             }

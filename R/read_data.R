@@ -271,6 +271,10 @@ read.data <- function(environment, genome = "mm10", min.genes.per.cell = 500, ma
                 print(rownames(counts)[indices])
                 rownames(counts)[indices] <- paste(rownames(counts)[indices], seq(length(indices)),
                   sep = ".")
+		################# yinglu changed here
+		# make genes.filter's gene name is the same with counts's gene name
+		names(genes.filter)[indices] <- rownames(counts)[indices]
+		###################################################################
                 print(rownames(counts)[indices])
             }
         }

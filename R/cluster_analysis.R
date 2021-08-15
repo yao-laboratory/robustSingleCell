@@ -27,7 +27,8 @@ cluster <- function(knn.ratio, label, path, data.path, nPCs) {
     ################# yinglu changed here
     # to fix the problem that PCA has no same dimension with membership
     # the reason is that the graph structure delete some cells that are not neighbour to others
-    
+    vertices_name <- community$names
+    nclusters <- length(unique(membership))
     n_cell = dim(PCA)[2]
     membership_changed <- numeric(n_cell)
     n <- 1:n_cell
@@ -50,10 +51,11 @@ cluster <- function(knn.ratio, label, path, data.path, nPCs) {
         }
 
     colnames(memberships_changed) <- NULL
-    ncluster <- ncluster+1
+    nclusters <- nclusters+1
 
     clustering <- list(modularity = modularity, memberships = memberships_changed, membership = membership_changed, knn.ratio = knn.ratio, nclusters = nclusters)
 
+    
 #    clustering <- list(modularity = modularity, memberships = memberships, membership = membership,
  #       knn.ratio = knn.ratio, nclusters = nclusters)
 ############################################################################################

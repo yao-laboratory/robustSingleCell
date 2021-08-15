@@ -117,18 +117,20 @@ PCA <- function(environment, regress = NA, groups = NA, nShuffleRuns = 10, thres
         }
 
         sopt <- list(mem = mem, time = time, share = TRUE)
-
+############## yinglu changed here, add_objects has been deprecated, changed to global_object
         if (local) {
             sjob <- slurm_apply(get.shuffled.var, data.frame(rep = seq(nShuffleRuns)),
-            add_objects = c("shuffled.PCA.data.path", "data", "ndf"), pkgs = NULL,
+            global_objects = c("shuffled.PCA.data.path", "data", "ndf"), pkgs = NULL,
             nodes = nShuffleRuns, cpus_per_node = 1, submit = FALSE, slurm_options = sopt)
+           # add_objects = c("shuffled.PCA.data.path", "data", "ndf"), pkgs = NULL,
             local_slurm_array(sjob)
         } else {
             sjob <- slurm_apply(get.shuffled.var, data.frame(rep = seq(nShuffleRuns)),
-            add_objects = c("shuffled.PCA.data.path", "data", "ndf"), pkgs = NULL,
+            global_objects = c("shuffled.PCA.data.path", "data", "ndf"), pkgs = NULL,
             nodes = nShuffleRuns, cpus_per_node = 1, submit = TRUE, slurm_options = sopt)
+           # add_objects = c("shuffled.PCA.data.path", "data", "ndf"), pkgs = NULL,
         }
-
+####################################################################################
         pc.time <- Sys.time()
         pca <- stats::prcomp(t(data), retx = TRUE, center = T, scale = T)
         print.message("Single PCA run time:")

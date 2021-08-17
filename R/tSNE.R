@@ -54,9 +54,7 @@ run_tSNE <- function(environment, perplexity, max_iter, rerun, local = F, mem = 
                 return()
             }
         }
-########################## yinglu change here, remove share tag
-        #sopt <- list(mem = mem, time = time, share = TRUE)
-        sopt <- list(mem = mem, time = time)
+        sopt <- list(mem = mem, time = time, share = TRUE)
 
         if (local) {
             sjob <- slurm_apply(tSNE, params, nodes = nrow(params),
@@ -65,8 +63,8 @@ run_tSNE <- function(environment, perplexity, max_iter, rerun, local = F, mem = 
                                 cpus_per_node = 1, submit = FALSE, slurm_options = sopt)
             local_slurm_array(sjob)
 	    ############yinglu add here based on branch
-#	    waiting <- get_slurm_out(sjob)
-#       	    end()
+	    waiting <- get_slurm_out(sjob)
+       	    end()
 	    #######################################
         } else {
             sjob <- slurm_apply(tSNE, params, nodes = nrow(params), cpus_per_node = 1,

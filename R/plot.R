@@ -279,6 +279,8 @@ plot.tSNE <- function(environment, tSNE.job, perplexity, max_iter, membership = 
                 }
             }
         }, error = function(e) e)
+
+	#####################yinglu changed here because dev.off can not close
         while (!is.null(grDevices::dev.list())) grDevices::dev.off()
     }
 }

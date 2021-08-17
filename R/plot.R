@@ -395,8 +395,8 @@ plot.expression.heatmap.based.on.FC.marker <- function(measurements, clustering,
             }
         }, error = function(e) print(e))
     }
-
-    rownames(others)
+##############yinglu changed here, a line that has no meaning
+    #rownames(others)
 }
 
 #' Plot heatmap

@@ -62,10 +62,6 @@ run_tSNE <- function(environment, perplexity, max_iter, rerun, local = F, mem = 
                                # global_objects = c("data.path", "tSNEs.dir"),
                                 cpus_per_node = 1, submit = FALSE, slurm_options = sopt)
             local_slurm_array(sjob)
-	    ############yinglu add here based on branch
-	    waiting <- get_slurm_out(sjob)
-       	    end()
-	    #######################################
         } else {
             sjob <- slurm_apply(tSNE, params, nodes = nrow(params), cpus_per_node = 1,
                                 #global_objects = c("data.path", "tSNEs.dir"), submit = TRUE, slurm_options = sopt)

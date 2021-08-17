@@ -279,7 +279,7 @@ plot.tSNE <- function(environment, tSNE.job, perplexity, max_iter, membership = 
                 }
             }
         }, error = function(e) e)
-        grDevices::dev.off()
+        while (!is.null(grDevices::dev.list())) grDevices::dev.off()
     }
 }
 

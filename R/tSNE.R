@@ -58,14 +58,14 @@ run_tSNE <- function(environment, perplexity, max_iter, rerun, local = F, mem = 
 
         if (local) {
             sjob <- slurm_apply(tSNE, params, nodes = nrow(params),
-                                add_objects = c("data.path", "tSNEs.dir"),
-                               # global_objects = c("data.path", "tSNEs.dir"),
+                               # add_objects = c("data.path", "tSNEs.dir"),
+                                global_objects = c("data.path", "tSNEs.dir"),
                                 cpus_per_node = 1, submit = FALSE, slurm_options = sopt)
             local_slurm_array(sjob)
         } else {
             sjob <- slurm_apply(tSNE, params, nodes = nrow(params), cpus_per_node = 1,
-                                #global_objects = c("data.path", "tSNEs.dir"), submit = TRUE, slurm_options = sopt)
-                                add_objects = c("data.path", "tSNEs.dir"), submit = TRUE, slurm_options = sopt)
+                                global_objects = c("data.path", "tSNEs.dir"), submit = TRUE, slurm_options = sopt)
+                               # add_objects = c("data.path", "tSNEs.dir"), submit = TRUE, slurm_options = sopt)
         }
     }
 

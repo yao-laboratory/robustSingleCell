@@ -177,8 +177,9 @@ cluster.analysis <- function(environment, knn.ratios = c(0.01, 0.05, 0.1), nShuf
         print(utils::head(params))
         print.message("Tail params:")
         print(utils::tail(params))
-
-        sopt <- list(mem = mem, time = time, share = TRUE)
+##########################yinglu changed here, remove share tag
+        #sopt <- list(mem = mem, time = time, share = TRUE)
+        sopt <- list(mem = mem, time = time)
 
         if (local) {
             sjob <- sjob <- slurm_apply(cluster, params, nodes = nrow(params), cpus_per_node = 1,

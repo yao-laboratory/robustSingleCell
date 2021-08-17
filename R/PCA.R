@@ -115,8 +115,9 @@ PCA <- function(environment, regress = NA, groups = NA, nShuffleRuns = 10, thres
                 paste("shuffled.PCA.rep", rep, "rds", sep = ".")))
             return(var.perm)
         }
-
-        sopt <- list(mem = mem, time = time, share = TRUE)
+######################## yinglu change here, remove share tag
+#        sopt <- list(mem = mem, time = time, share = TRUE)
+        sopt <- list(mem = mem, time = time)
 ############## yinglu changed here, add_objects has been deprecated, changed to global_object
         if (local) {
             sjob <- slurm_apply(get.shuffled.var, data.frame(rep = seq(nShuffleRuns)),

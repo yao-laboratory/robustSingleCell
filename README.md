@@ -18,9 +18,10 @@ described in Magen et al. (2019)
 [*bioRxiv*](https://doi.org/10.1101/543199) \[1\].
 
 ### Installation
-
+This package was tested on hcc cluster with R=4.1.
 Install the following dependencies before installing the package:
 
+For any cluster, Bioconductor need to be installed to get access to biomaRt & limma:
 ``` r
 if(!require(devtools))
   install.packages("devtools")
@@ -28,22 +29,31 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
 
 BiocManager::install("limma")
-BiocManager::install("grimbough/biomaRt")
+BiocManager::install("biomaRt")
 ```
-
-You can then install the stable version from CRAN:
-
+Installing biomaRt may meet errors of not finding fenv.hpp, which can be solved by installing boost-cpp and RSQLite.
+``` shell
+conda install -c conda-forge boost-cpp 
+```
 ``` r
-install.packages("robustSingleCell")
+install.packages("RSQLite") 
 ```
-
-To access the latest features or bug fixes, you can install the
-development version from GitHub.
-
+After successfully installing dependence, robustSingleCell can be installed from Github.
 ``` r
-devtools::install_github("asmagen/robustsinglecell")
+devtools::install_github("yao-laboratory/robustSingleCell")
 ```
+For hcc cluster, you can use the Bioconductor provided by hcc directly. 
 
+``` shell
+$ module purge
+$ module load bioconductor/4.0
+$ mkdir -p ~/R/x86_64-conda_cos6-linux-gnu-library/4.0
+$ R_REMOTES_UPGRADE="never" R
+```
+``` r
+.libPaths(c("~/R/x86_64-conda_cos6-linux-gnu-library/4.0",.libPaths()))
+devtools::install_github("yao-laboratory/robustsinglecell")
+```
 This pipeline currently supports [slurm](https://slurm.schedmd.com) for
 parallel batch jobs.
 
@@ -83,7 +93,7 @@ download_LCMV()
 (`matrix.mtx`, `gene.tsv` and `barcode.tsv`) will be typically located
 at ⁨`outs⁩/⁨filtered_gene_bc_matrices⁩/⁨mm10⁩`, depending on the genome
 used for alignment. Copy the contents of this directory to the working
-directory `data.path` specified in `initialize.project` below.
+directory `data.path` specified in `initialize.project` below. The 'data.path' and 'work.path' have to be absolute directory.
 
 We cluster each dataset separately to account for dataset-specific
 technical and biological differences. Then, we measure the
@@ -144,7 +154,7 @@ post (bottom) quality control filtering.
 
 The `PCA` function performs multiple simulation analyses of shuffled
 data to determine the appropriate number of PCs. You can also run each
-simulation in parallel using the option `local = F`.
+simulation in parallel using the option `local = F`. For hcc cluster, `local = T` is neccessary. You can also set up parameters `mem = "4GB", time = "0:30:00" ` to control memory and running time need for the slurm jobs.
 
 ``` r
 LCMV1 <- PCA(LCMV1, local = T)
